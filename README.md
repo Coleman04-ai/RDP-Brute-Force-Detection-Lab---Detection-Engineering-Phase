@@ -26,7 +26,7 @@ since that's how a common attack tool's failed attempts actually appear in the l
 - **Confirmed logging is enabled** on the victim VM before building the detection by
   manually triggering a failed RDP logon and verifying it appeared in Event Viewer.
 
-![Raw Security log filling up with Event ID 4625 during a test attack](screenshots/screenshots01_4625_flood.png)
+![Raw Security log filling up with Event ID 4625 during a test attack](screenshots/screenshots01_4625_flood..png)
 
 ## 3. Detection Logic
 
@@ -46,14 +46,14 @@ Two forms of the same rule, kept in sync:
   troubleshooting to show exactly what each run finds - kept in for now as evidence
   of the debugging process; can be stripped out for a "clean" production version.
 
-![PowerShell detector script - synopsis and config block](screenshots/screenshots02_detector_script_.png)
+![PowerShell detector script - synopsis and config block](screenshots/screenshots02_detector_script_..png)
 
 ### How the PowerShell detector is wired up (no SIEM needed)
 
 1. Open **Event Viewer** -> Windows Logs -> Security.
 2. **Create a Custom View** filtered to Event ID 4625.
 
-![Custom view scoped to Event ID 4625, with event detail pane confirming source IP and logon type](screenshots/screenshots16_filtered_view_event_detail_unredacted_1_.png)
+![Custom view scoped to Event ID 4625, with event detail pane confirming source IP and logon type](screenshots/screenshots16_filtered_view_event_detail_unredacted_1_..png)
 
 3. Right-click the Custom View -> **"Attach a Task to This Custom View."**
 4. Set the task action to run PowerShell with:
@@ -79,9 +79,9 @@ logic works independent of any specific SIEM product.
 account `USER` (see "what went wrong" below for why this mattered), generating a
 sustained burst of failed logon attempts.
 
-![Remote Desktop enabled on the target ahead of testing](screenshots/screenshots04_rdp_enabled.png)
+![Remote Desktop enabled on the target ahead of testing](screenshots/screenshots04_rdp_enabled..png)
 
-![Hydra running against the RDP port](screenshots/screenshots05_hydra_attack.png)
+![Hydra running against the RDP port](screenshots/screenshots05_hydra_attack..png)
 
 ## 5. Results - What Actually Happened (and everything that had to be fixed first)
 
@@ -116,7 +116,7 @@ was already sound before the test target was corrected. The terminal session bel
 shows both entries side by side: the early alert against `coleman04`, and the later
 one against the corrected `USER` account after the fix:
 
-![Alert log entry from an earlier successful trigger (pre-fix account)](screenshots/screenshots06_alert_fired_.png)
+![Alert log entry from an earlier successful trigger (pre-fix account)](screenshots/screenshots06_alert_fired_..png)
 
 ![Terminal session showing both the pre-fix (coleman04) and post-fix (USER) alert log entries together](screenshots/screenshots09_alert_log_before_after.png)
 
@@ -147,7 +147,7 @@ log. Investigation via Task Scheduler's History tab and Last Run Result showed:
      very heavy sustained bursts (600+ events in a short window). This is an
      honest limitation of this implementation, not a claim that it's fully solved.
 
-![Task Scheduler run history showing the registration/disable/re-enable cycle during troubleshooting](screenshots/screenshots07_scheduled_task_history.png)
+![Task Scheduler run history showing the registration/disable/re-enable cycle during troubleshooting](screenshots/screenshots07_scheduled_task_history..png)
 
 **6. Final proof (manual execution, immediately after a fresh attack):**
 ```
